@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /tmp/
+
+Sitemap: https://matthewlowe-property.com/sitemap.xml
+
+# Matthew Lowe — Fine & Country
+# Luxury Property Advisory — UK & Dubai

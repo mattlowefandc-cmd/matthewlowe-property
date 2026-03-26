@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lanyard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<script src="./three.min.js"></script>
+<script>
+// ─────────────────────────────────────────────
+//  SCENE
+// ─────────────────────────────────────────────
+const W = window.innerWidth, H = window.innerHeight;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(28, W / H, 0.1, 100);
+camera.position.set(0, 0, 14);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(W, H);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.toneMapping = THREE.LinearToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputEncoding = THREE.sRGBEncoding;
+document.body.appendChild(renderer.domElement);
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ─────────────────────────────────────────────
+//  LIGHTING
+// ─────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0xffffff, 2.5));
+const dir1 = new THREE.DirectionalLight(0xffffff, 3); dir1.position.set(0, -1, 5); scene.add(dir1);
+const dir2 = new THREE.DirectionalLight(0xffffff, 4); dir2.position.set(-1, -1, 1); scene.add(dir2);
+const dir3 = new THREE.DirectionalLight(0xffffff, 4); dir3.position.set(1, 1, 1); scene.add(dir3);
+const dir4 = new THREE.DirectionalLight(0xffffff, 8); dir4.position.set(-10, 0, 14); scene.add(dir4);
+
+// ─────────────────────────────────────────────
+//  CARD TEXTURE (Canvas)
+// ─────────────────────────────────────────────
+function makeCardTexture() {
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 720;
+  const ctx = c.getContext('2d');
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 512, 720);
+  bg.addColorStop(0, '#0a0a0a');
+  bg.addColorStop(1, '#1a1508');
+  ctx.fillStyle = bg;
+  ctx.roundRect(0, 0, 512, 720, 24);
+  ctx.fill();
+
+  // Gold border
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 3;
+  ctx.roundRect(12, 12, 488, 696, 18);
+  ctx.stroke();
+
+  // Inner subtle border
+  ctx.strokeStyle = 'rgba(201,168,76,0.25)';
+  ctx.lineWidth = 1;
+  ctx.roundRect(20, 20, 472, 680, 14);
+  ctx.stroke();
+
+  // F&C logo area top-left
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = 'bold 22px Georgia, serif';
+  ctx.fillText('FINE & COUNTRY', 40, 80);
+
+  ctx.strokeStyle = 'rgba(201,168,76,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(40, 92); ctx.lineTo(220, 92); ctx.stroke();
+
+  // Name
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '300 52px Georgia, serif';
+  ctx.fillText('Matthew', 40, 220);
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = 'italic 52px Georgia, serif';
+  ctx.fillText('Lowe', 40, 280);
+
+  // Title
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '500 14px Arial, sans-serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('LUXURY PROPERTY ADVISOR', 40, 320);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(201,168,76,0.35)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(40, 345); ctx.lineTo(472, 345); ctx.stroke();
+
+  // Markets
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '12px Arial, sans-serif';
+  ctx.fillText('UNITED KINGDOM  ·  DUBAI, UAE', 40, 375);
+
+  // Contact
+  ctx.fillStyle = '#C9A84C';
+  ctx.font = '13px Arial, sans-serif';
+  ctx.fillText('matthew@fineandcountry.com', 40, 500);
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '12px Arial, sans-serif';
+  ctx.fillText('fineandcountry.com/matthew-lowe', 40, 525);
+
+  // Clip hole
+  ctx.fillStyle = 'rgba(201,168,76,0.25)';
+  ctx.beginPath();
+  ctx.arc(256, 50, 14, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Bottom gold accent
+  const bottomGrad = ctx.createLinearGradient(0, 660, 512, 720);
+  bottomGrad.addColorStop(0, 'transparent');
+  bottomGrad.addColorStop(1, 'rgba(201,168,76,0.12)');
+  ctx.fillStyle = bottomGrad;
+  ctx.roundRect(0, 660, 512, 60, [0, 0, 18, 18]);
+  ctx.fill();
+
+  const tex = new THREE.CanvasTexture(c);
+  return tex;
+}
+
+// ─────────────────────────────────────────────
+//  LANYARD TEXTURE (canvas stripes)
+// ─────────────────────────────────────────────
+function makeLanyardTexture() {
+  const c = document.createElement('canvas');
+  c.width = 64; c.height = 256;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, 64, 256);
+  for (let y = 0; y < 256; y += 16) {
+    ctx.fillStyle = '#C9A84C';
+    ctx.fillRect(0, y, 64, 4);
+    ctx.fillStyle = 'rgba(201,168,76,0.15)';
+    ctx.fillRect(0, y + 4, 64, 12);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(1, 6);
+  return tex;
+}
+
+// ─────────────────────────────────────────────
+//  CARD MESH
+// ─────────────────────────────────────────────
+const cardTex = makeCardTexture();
+const cardGeo = new THREE.BoxGeometry(1.6, 2.25, 0.04);
+const cardMat = new THREE.MeshPhysicalMaterial({
+  map: cardTex,
+  metalness: 0.8,
+  roughness: 0.3,
+  clearcoat: 1.0,
+  clearcoatRoughness: 0.1,
+  reflectivity: 0.9,
+});
+const cardMesh = new THREE.Mesh(cardGeo, cardMat);
+cardMesh.castShadow = true;
+scene.add(cardMesh);
+
+// Card clip (gold metal top)
+const clipGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.18, 16);
+const clipMat = new THREE.MeshStandardMaterial({ color: 0xC9A84C, metalness: 1.0, roughness: 0.1 });
+const clipMesh = new THREE.Mesh(clipGeo, clipMat);
+clipMesh.castShadow = true;
+scene.add(clipMesh);
+
+// ─────────────────────────────────────────────
+//  ROPE PHYSICS (Verlet)
+// ─────────────────────────────────────────────
+const SEGMENTS = 24;
+const GRAVITY = new THREE.Vector3(0, -30, 0);
+const ANCHOR = new THREE.Vector3(0, 4.5, 0);
+
+class RopeNode {
+  constructor(x, y, z) {
+    this.pos = new THREE.Vector3(x, y, z);
+    this.prev = new THREE.Vector3(x, y, z);
+    this.locked = false;
+  }
+}
+
+const nodes = [];
+for (let i = 0; i <= SEGMENTS; i++) {
+  const t = i / SEGMENTS;
+  const n = new RopeNode(ANCHOR.x, ANCHOR.y - t * 3.2, ANCHOR.z);
+  if (i === 0) n.locked = true;
+  nodes.push(n);
+}
+
+const REST_LEN = 3.2 / SEGMENTS;
+
+function simulateRope(dt) {
+  // Verlet integration
+  for (let i = 1; i < nodes.length; i++) {
+    const n = nodes[i];
+    const vel = n.pos.clone().sub(n.prev);
+    vel.multiplyScalar(0.985); // damping
+    n.prev.copy(n.pos);
+    n.pos.add(vel).addScaledVector(GRAVITY, dt * dt);
+  }
+  // Constraint solve (10 iterations)
+  for (let iter = 0; iter < 12; iter++) {
+    nodes[0].pos.copy(ANCHOR);
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const a = nodes[i], b = nodes[i + 1];
+      const delta = b.pos.clone().sub(a.pos);
+      const dist = delta.length();
+      const diff = (dist - REST_LEN) / dist;
+      const offset = delta.multiplyScalar(0.5 * diff);
+      if (!a.locked) a.pos.add(offset);
+      if (!b.locked) b.pos.sub(offset);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+//  ROPE RENDERING (CatmullRom tube)
+// ─────────────────────────────────────────────
+const lanyardTex = makeLanyardTexture();
+const tubeMat = new THREE.MeshStandardMaterial({
+  map: lanyardTex,
+  metalness: 0.3,
+  roughness: 0.6,
+  side: THREE.DoubleSide,
+});
+// We'll build a tube each frame from the rope curve
+let tubeMesh = null;
+
+function buildTube() {
+  const pts = nodes.map(n => n.pos.clone());
+  const curve = new THREE.CatmullRomCurve3(pts);
+  if (tubeMesh) { scene.remove(tubeMesh); tubeMesh.geometry.dispose(); }
+  const geo = new THREE.TubeGeometry(curve, SEGMENTS * 2, 0.04, 8, false);
+  tubeMesh = new THREE.Mesh(geo, tubeMat);
+  scene.add(tubeMesh);
+}
+buildTube();
+
+// ─────────────────────────────────────────────
+//  DRAG INTERACTION
+// ─────────────────────────────────────────────
+let dragging = false;
+let dragOffset = new THREE.Vector3();
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+const cardHitbox = new THREE.Mesh(
+  new THREE.BoxGeometry(2.0, 2.8, 0.5),
+  new THREE.MeshBasicMaterial({ visible: false })
+);
+scene.add(cardHitbox);
+
+function getWorldPoint(clientX, clientY) {
+  mouse.x = (clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const pt = new THREE.Vector3();
+  raycaster.ray.intersectPlane(dragPlane, pt);
+  return pt;
+}
+
+let cardPos = new THREE.Vector3(0, 0, 0);
+let cardVel = new THREE.Vector3(0, 0, 0);
+let cardRot = new THREE.Euler(0, 0, 0);
+let cardAngVel = new THREE.Vector3(0, 0, 0);
+
+renderer.domElement.addEventListener('mousedown', e => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObject(cardHitbox);
+  if (hits.length > 0) {
+    dragging = true;
+    const wp = getWorldPoint(e.clientX, e.clientY);
+    dragOffset.copy(wp).sub(cardPos);
+    renderer.domElement.style.cursor = 'grabbing';
+  }
+});
+renderer.domElement.addEventListener('mousemove', e => {
+  if (!dragging) {
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObject(cardHitbox);
+    renderer.domElement.style.cursor = hits.length ? 'grab' : 'default';
+    return;
+  }
+  const wp = getWorldPoint(e.clientX, e.clientY);
+  const target = wp.clone().sub(dragOffset);
+  cardVel.copy(target).sub(cardPos).multiplyScalar(18);
+  cardPos.copy(target);
+});
+window.addEventListener('mouseup', () => { dragging = false; renderer.domElement.style.cursor = 'default'; });
+
+// Touch
+renderer.domElement.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  mouse.x = (t.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(t.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObject(cardHitbox);
+  if (hits.length) {
+    dragging = true;
+    dragOffset.copy(getWorldPoint(t.clientX, t.clientY)).sub(cardPos);
+  }
+}, { passive: true });
+renderer.domElement.addEventListener('touchmove', e => {
+  if (!dragging) return;
+  const t = e.touches[0];
+  const wp = getWorldPoint(t.clientX, t.clientY);
+  cardPos.copy(wp.clone().sub(dragOffset));
+}, { passive: true });
+window.addEventListener('touchend', () => { dragging = false; });
+
+// ─────────────────────────────────────────────
+//  ANIMATE
+// ─────────────────────────────────────────────
+const clock = new THREE.Clock();
+let lastT = 0;
+
+// Give initial wobble
+nodes[nodes.length - 1].pos.set(0.8, 0.5, 0);
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  const dt = Math.min(t - lastT, 0.033);
+  lastT = t;
+
+  // If dragging, force last rope node to card position
+  if (dragging) {
+    nodes[nodes.length - 1].pos.copy(cardPos).add(new THREE.Vector3(0, 1.2, 0));
+    nodes[nodes.length - 1].prev.copy(nodes[nodes.length - 1].pos);
+  }
+
+  simulateRope(dt);
+
+  // Card position follows last rope node
+  const lastNode = nodes[nodes.length - 1];
+  const targetCardPos = lastNode.pos.clone().sub(new THREE.Vector3(0, 1.2, 0));
+
+  if (!dragging) {
+    cardVel.addScaledVector(targetCardPos.clone().sub(cardPos), 12 * dt);
+    cardVel.multiplyScalar(0.9);
+    cardPos.addScaledVector(cardVel, dt);
+  }
+
+  // Card angular velocity based on rope movement
+  const prevLast = nodes[nodes.length - 2].pos;
+  const ropeDir = lastNode.pos.clone().sub(prevLast).normalize();
+  cardAngVel.y -= ropeDir.x * 0.8;
+  cardAngVel.multiplyScalar(0.9);
+  cardRot.y += cardAngVel.y * dt;
+  // Gentle z tilt from rope angle
+  cardRot.z += (-ropeDir.x * 0.4 - cardRot.z) * 4 * dt;
+  cardRot.x += (-ropeDir.y * 0.1 - cardRot.x) * 4 * dt;
+
+  cardMesh.position.copy(cardPos);
+  cardMesh.rotation.set(cardRot.x, cardRot.y, cardRot.z);
+  cardHitbox.position.copy(cardPos);
+  cardHitbox.rotation.copy(cardMesh.rotation);
+
+  // Clip sits at top of card
+  const clipOffset = new THREE.Vector3(0, 1.2, 0).applyEuler(cardMesh.rotation);
+  clipMesh.position.copy(cardPos).add(clipOffset);
+  clipMesh.rotation.copy(cardMesh.rotation);
+
+  // Rebuild tube from rope nodes
+  buildTube();
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
