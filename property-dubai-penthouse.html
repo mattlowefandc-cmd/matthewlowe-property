@@ -198,10 +198,12 @@ footer{background:var(--black);padding:60px 80px 30px;}
   .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
 }
 
+
 /* ── GLOBAL MOBILE NAV OVERRIDES ── */
 @media(max-width:1400px){
   nav{padding:0 24px !important;}
   .nav-links{position:fixed !important;top:0;right:-100%;width:80%;height:100vh;background:var(--black) !important;display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:40px;transition:right 0.5s cubic-bezier(0.16,1,0.3,1);box-shadow:-20px 0 60px rgba(0,0,0,0.5);}
+  ul{list-style:none;} /* Fix for blog unordered lists */
   .nav-links.active{right:0 !important;}
   .hamburger{display:flex !important;}
 }
@@ -217,9 +219,9 @@ footer{background:var(--black);padding:60px 80px 30px;}
   .ph-price{font-size: 28px !important; text-align: center !important;}
   .btn-gallery{width:100% !important; justify-content:center !important;}
   .calc-grid{grid-template-columns:1fr !important;}
-  .similar-grid{display:flex!important; flex-wrap:nowrap!important; overflow-x:auto!important; scroll-snap-type:x mandatory!important; gap:16px!important; padding-bottom:20px!important; -webkit-overflow-scrolling:touch!important; grid-template-columns:none!important;}
-  .similar-grid::-webkit-scrollbar { display:none!important; }
-  .sim-card { flex: 0 0 85%!important; scroll-snap-align:center!important; }
+  .similar-grid, .grid {display:flex!important; flex-wrap:nowrap!important; overflow-x:auto!important; scroll-snap-type:x mandatory!important; gap:16px!important; padding-bottom:20px!important; -webkit-overflow-scrolling:touch!important; grid-template-columns:none!important;}
+  .similar-grid::-webkit-scrollbar, .grid::-webkit-scrollbar { display:none!important; }
+  .sim-card, .card { flex: 0 0 85%!important; scroll-snap-align:center!important; }
   .footer-grid{grid-template-columns:1fr !important; gap:40px !important; text-align:center !important;}
   .footer-brand{display:flex !important; flex-direction:column !important; align-items:center !important;}
   .footer-brand p{text-align:center !important;}
@@ -229,7 +231,8 @@ footer{background:var(--black);padding:60px 80px 30px;}
   .blog-hero { padding: 80px 20px 40px !important; }
   .blog-title { font-size: 28px !important; }
 }
-\n</style>
+
+</style>
 </head>
 <body>
 

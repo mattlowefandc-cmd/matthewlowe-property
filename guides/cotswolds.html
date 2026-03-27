@@ -69,10 +69,12 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 40px;displa
 .hamburger.active span:nth-child(1){transform:translateY(3px) rotate(45deg);}
 .hamburger.active span:nth-child(2){transform:translateY(-2.5px) rotate(-45deg);}
 .hamburger.active span:nth-child(3){display:none;}\n
+
 /* ── GLOBAL MOBILE NAV OVERRIDES ── */
 @media(max-width:1400px){
   nav{padding:0 24px !important;}
   .nav-links{position:fixed !important;top:0;right:-100%;width:80%;height:100vh;background:var(--black) !important;display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:40px;transition:right 0.5s cubic-bezier(0.16,1,0.3,1);box-shadow:-20px 0 60px rgba(0,0,0,0.5);}
+  ul{list-style:none;} /* Fix for blog unordered lists */
   .nav-links.active{right:0 !important;}
   .hamburger{display:flex !important;}
 }
@@ -88,9 +90,9 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 40px;displa
   .ph-price{font-size: 28px !important; text-align: center !important;}
   .btn-gallery{width:100% !important; justify-content:center !important;}
   .calc-grid{grid-template-columns:1fr !important;}
-  .similar-grid{display:flex!important; flex-wrap:nowrap!important; overflow-x:auto!important; scroll-snap-type:x mandatory!important; gap:16px!important; padding-bottom:20px!important; -webkit-overflow-scrolling:touch!important; grid-template-columns:none!important;}
-  .similar-grid::-webkit-scrollbar { display:none!important; }
-  .sim-card { flex: 0 0 85%!important; scroll-snap-align:center!important; }
+  .similar-grid, .grid {display:flex!important; flex-wrap:nowrap!important; overflow-x:auto!important; scroll-snap-type:x mandatory!important; gap:16px!important; padding-bottom:20px!important; -webkit-overflow-scrolling:touch!important; grid-template-columns:none!important;}
+  .similar-grid::-webkit-scrollbar, .grid::-webkit-scrollbar { display:none!important; }
+  .sim-card, .card { flex: 0 0 85%!important; scroll-snap-align:center!important; }
   .footer-grid{grid-template-columns:1fr !important; gap:40px !important; text-align:center !important;}
   .footer-brand{display:flex !important; flex-direction:column !important; align-items:center !important;}
   .footer-brand p{text-align:center !important;}
@@ -100,26 +102,28 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 40px;displa
   .blog-hero { padding: 80px 20px 40px !important; }
   .blog-title { font-size: 28px !important; }
 }
-\n</style>
+
+</style>
 </head>
 <body>
 <nav id="nav">
   <div class="nav-logo">
-    <a href="../index.html" style="text-decoration:none;display:flex;align-items:center;gap:20px;">
-      <img src="../assets/fc_logo_custom_white.png" alt="Fine &amp; Country" style="height: 36px; width: auto;">
-      <div style="width:1px;height:28px;background:rgba(255,255,255,0.3);"></div>
-      <div class="nav-name">Matthew Lowe</div>
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 20px;">
+      <img src="../assets/fc_logo_custom_white.png" alt="Fine & Country" style="height: 36px; width: auto;">
+      <div style="width: 1px; height: 28px; background: rgba(255,255,255,0.3);"></div>
+      <div class="name">Matthew Lowe</div>
     </a>
   </div>
-  <ul class="nav-links" style="list-style:none;display:flex;gap:28px;align-items:center;">
-    <li><a href="../index.html#about" style="color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">About</a></li>
-    <li><a href="../blog.html" style="color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">Blog &amp; Guides</a></li>
-    <li><a href="../calculator.html" style="color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">ROI Calculator</a></li>
-    <li><a href="../index.html#services" style="color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">Services</a></li>
-    <li><a href="../index.html#properties" style="color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">Properties</a></li>
-    <li><a href="../index.html#guide" style="color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">Investor Guide</a></li>
-    <li><a href="../index.html#contact" style="background:#c9a84c;color:#fff;padding:10px 24px;letter-spacing:2px;font-size:10px;text-transform:uppercase;font-weight:500;text-decoration:none;">Book a Call</a></li>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../blog.html">Blog &amp; Guides</a></li>
+    <li><a href="../calculator.html">ROI Calculator</a></li>
+    <li><a href="../index.html#services">Services</a></li>
+    <li><a href="../index.html#properties">Properties</a></li>
+    <li><a href="../index.html#guide">Investor Guide</a></li>
+    <li><a href="../index.html#contact" class="nav-cta">Book a Call</a></li>
   </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
 <div class="breadcrumb"><a href="../index.html">Home</a> &rsaquo; <a href="../blog.html">Guides</a> &rsaquo; Cotswolds Area Guide 2026</div>
 <article>
