@@ -18,7 +18,12 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 40px;displa
 .nav-links{list-style:none;display:flex;gap:36px;align-items:center;}
 .nav-links a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
 .nav-links a:hover{color:var(--gold);}
-.nav-cta{background:var(--gold);color:var(--white)!important;padding:10px 24px;letter-spacing:2px;transition:background 0.3s!important;}
+.hamburger{display:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--gold);flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:all 0.3s;background:rgba(255,255,255,0.05);}
+.hamburger:hover{background:rgba(201,168,76,0.15);transform:scale(1.05);}
+.hamburger span{width:18px;height:1.5px;background:var(--gold);transition:all 0.3s;}
+.hamburger.active span:nth-child(1){transform:translateY(3px) rotate(45deg);}
+.hamburger.active span:nth-child(2){transform:translateY(-2.5px) rotate(-45deg);}
+.hamburger.active span:nth-child(3){display:none;}\n.nav-cta{background:var(--gold);color:var(--white)!important;padding:10px 24px;letter-spacing:2px;transition:background 0.3s!important;}
 .nav-cta:hover{background:#dfc070!important;color:var(--dark)!important;}
 .guide-cta-banner{background:var(--black);padding:60px 80px;display:flex;align-items:center;justify-content:space-between;gap:40px;border-top:1px solid rgba(201,168,76,0.2);}
 .guide-cta-banner h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);font-weight:300;}
@@ -98,7 +103,39 @@ footer {
   color: rgba(255,255,255,0.3);
 }
 @media(max-width:768px){.header{padding:120px 24px 40px;}nav{padding:0 20px;}nav ul{display:none;}.container{padding:0 24px 60px;}}
-</style>
+
+/* ── GLOBAL MOBILE NAV OVERRIDES ── */
+@media(max-width:1400px){
+  nav{padding:0 24px !important;}
+  .nav-links{position:fixed !important;top:0;right:-100%;width:80%;height:100vh;background:var(--black) !important;display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:40px;transition:right 0.5s cubic-bezier(0.16,1,0.3,1);box-shadow:-20px 0 60px rgba(0,0,0,0.5);}
+  .nav-links.active{right:0 !important;}
+  .hamburger{display:flex !important;}
+}
+@media(max-width:768px){
+  #prop-details{grid-template-columns:1fr !important; padding:40px 20px !important;}
+  .quick-stats{flex-wrap:wrap !important; padding:20px !important; gap:20px !important; justify-content:center !important;}
+  .qs-item{border-right:none !important; padding-right:0 !important; width:45% !important;}
+  .pd-section{padding:24px !important;}
+  .pd-features{grid-template-columns:1fr !important;}
+  .prop-hero-content{padding: 0 10px 40px !important; text-align: center !important;}
+  .ph-title{font-size: 32px !important; line-height: 1.2 !important; text-align: center !important;}
+  .ph-loc{font-size: 10px !important; text-align: center !important;}
+  .ph-price{font-size: 28px !important; text-align: center !important;}
+  .btn-gallery{width:100% !important; justify-content:center !important;}
+  .calc-grid{grid-template-columns:1fr !important;}
+  .similar-grid{display:flex!important; flex-wrap:nowrap!important; overflow-x:auto!important; scroll-snap-type:x mandatory!important; gap:16px!important; padding-bottom:20px!important; -webkit-overflow-scrolling:touch!important; grid-template-columns:none!important;}
+  .similar-grid::-webkit-scrollbar { display:none!important; }
+  .sim-card { flex: 0 0 85%!important; scroll-snap-align:center!important; }
+  .footer-grid{grid-template-columns:1fr !important; gap:40px !important; text-align:center !important;}
+  .footer-brand{display:flex !important; flex-direction:column !important; align-items:center !important;}
+  .footer-brand p{text-align:center !important;}
+  .contact-items{gap:16px !important;}
+  .social-row{flex-direction:column !important; width:100% !important;}
+  .social-btn{width:100% !important; justify-content:center !important;}
+  .blog-hero { padding: 80px 20px 40px !important; }
+  .blog-title { font-size: 28px !important; }
+}
+\n</style>
 </head>
 <body>
 <nav>
@@ -309,5 +346,12 @@ footer {
     <a href="index.html#contact" style="font-size:11px;text-decoration:none;color:var(--gold);">Book a Call &rarr;</a>
   </div>
 </footer>
-</body>
+<script>
+function toggleMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  const hamburger = document.getElementById('hamburger');
+  if(navLinks) navLinks.classList.toggle('active');
+  if(hamburger) hamburger.classList.toggle('active');
+}
+</script>\n</body>
 </html>
