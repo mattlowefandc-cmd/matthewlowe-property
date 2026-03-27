@@ -85,7 +85,8 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 40px;displa
 .hamburger.active span:nth-child(3){display:none;}
 
 
-/* ── GLOBAL MOBILE NAV OVERRIDES ── */
+
+/* ── MOBILE NAV OVERRIDES ── */
 @media (max-width: 1400px) {
   nav { padding: 0 24px !important; }
   .nav-links {
@@ -99,176 +100,62 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 40px;displa
   .hamburger { display: flex !important; }
 }
 
-/* ── MOBILE LAYOUT (PHONES) ── */
+/* ── COMPREHENSIVE MOBILE LAYOUT (PHONES) ── */
 @media (max-width: 768px) {
-  /* Header */
+  /* Global Centering & Spacing */
+  section { padding: 50px 20px !important; text-align: center !important; }
   .header { padding: 120px 24px 40px; text-align: center !important; }
   nav { padding: 0 20px; }
   .container { padding: 0 24px 60px; text-align: center !important; }
-  .section-title { text-align: center !important; }
+  .section-title { text-align: center !important; font-size: 28px !important; }
+  p, h1, h2, h3, h4, h5, h6, a, li, span { text-align: center !important; }
 
-  /* Blog/Guide card grids — horizontal swipe */
-  .similar-grid, .grid {
+  /* Hero Sections */
+  #hero { height: auto !important; min-height: 100vh !important; padding-top: 100px !important; }
+  .hero-content { padding: 0 10px 40px !important; }
+  .hero-title { font-size: 32px !important; line-height: 1.2 !important; }
+  .hero-desc { font-size: 14px !important; }
+  .hero-buttons { flex-direction: column !important; width: 100% !important; gap: 12px !important; }
+  .btn-primary, .btn-outline { width: 100% !important; text-align: center !important; }
+
+  /* Grid Layouts (Horizontal Swipe) */
+  .services-grid, .similar-grid, .grid, .process-steps, .testimonials-grid {
     display: flex !important; flex-wrap: nowrap !important;
     overflow-x: auto !important; scroll-snap-type: x mandatory !important;
     gap: 16px !important; padding-bottom: 20px !important;
     -webkit-overflow-scrolling: touch !important;
+    grid-template-columns: none !important;
   }
-  .similar-grid::-webkit-scrollbar, .grid::-webkit-scrollbar { display: none !important; }
-  .sim-card, .card { flex: 0 0 85% !important; scroll-snap-align: center !important; }
+  .services-grid::-webkit-scrollbar, .similar-grid::-webkit-scrollbar, .grid::-webkit-scrollbar, .process-steps::-webkit-scrollbar { display: none !important; }
+  .service-card, .sim-card, .card, .step { flex: 0 0 85% !important; scroll-snap-align: center !important; }
 
-  /* CTA Banner — clean horizontal on mobile */
-  .guide-cta-banner {
-    flex-direction: row !important; align-items: center !important;
-    padding: 24px 20px !important; gap: 16px !important;
-    text-align: center !important;
-  }
-  .guide-cta-banner h3 { font-size: 18px !important; line-height: 1.3 !important; }
-  .guide-cta-banner p { display: none !important; }
-  .guide-cta-banner a {
-    flex-shrink: 0 !important; padding: 12px 16px !important;
-    font-size: 8px !important; letter-spacing: 1.5px !important;
-    white-space: nowrap !important;
-  }
+  /* Stats Bar */
+  #stats { padding: 24px !important; flex-direction: column !important; gap: 0 !important; }
+  .stat { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important; padding: 24px 20px !important; }
+  .stat:last-child { border-bottom: none !important; }
 
-  /* ═══ PROPERTY HERO — FULL REWRITE FOR MOBILE ═══ */
+  /* Property Pages Specific */
   #prop-hero {
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    padding: 30px 20px !important;
-    height: auto !important;
-    min-height: 60vh !important;
-    gap: 16px !important;
+    flex-direction: column !important; align-items: center !important; justify-content: flex-end !important;
+    padding: 30px 20px !important; min-height: 60vh !important; gap: 16px !important;
   }
-  .prop-hero-content {
-    text-align: center !important;
-    padding: 0 !important;
-    max-width: 100% !important;
-  }
-  .ph-badge {
-    font-size: 9px !important;
-    padding: 5px 12px !important;
-    margin-bottom: 12px !important;
-  }
-  .ph-title {
-    font-size: 28px !important;
-    line-height: 1.15 !important;
-    text-align: center !important;
-    margin-bottom: 8px !important;
-  }
-  .ph-loc {
-    font-size: 10px !important;
-    letter-spacing: 2px !important;
-    text-align: center !important;
-    margin-bottom: 16px !important;
-  }
-  .ph-price {
-    font-size: 26px !important;
-    text-align: center !important;
-  }
-  .btn-gallery {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 12px 20px !important;
-    font-size: 10px !important;
-  }
-
-  /* ═══ GALLERY MODAL — MOBILE ═══ */
-  #gallery-modal { padding: 20px !important; }
-  .gm-content {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto !important;
-    height: auto !important;
-    max-height: 80vh !important;
-    overflow-y: auto !important;
-  }
-  .gm-img.large { grid-row: span 1 !important; }
-
-  /* ═══ PROPERTY DETAILS — SINGLE COLUMN ═══ */
-  #prop-details {
-    grid-template-columns: 1fr !important;
-    padding: 30px 16px !important;
-    gap: 24px !important;
-  }
+  .prop-hero-content { text-align: center !important; max-width: 100% !important; }
+  .btn-gallery { width: 100% !important; justify-content: center !important; }
+  #prop-details { grid-template-columns: 1fr !important; padding: 30px 16px !important; gap: 24px !important; }
   .content-col { order: 1 !important; }
   .sidebar-col { order: 2 !important; }
-  .sidebar { position: static !important; }
+  .quick-stats { flex-wrap: wrap !important; justify-content: center !important; }
+  .qs-item { width: 44% !important; border-right: none !important; padding-right: 0 !important; }
 
-  /* Quick Stats */
-  .quick-stats {
-    flex-wrap: wrap !important;
-    padding: 20px 16px !important;
-    gap: 16px !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-  .qs-item {
-    border-right: none !important;
-    padding-right: 0 !important;
-    width: 44% !important;
-    text-align: center !important;
-  }
-  .qs-val { font-size: 24px !important; text-align: center !important; }
-  .qs-lbl { text-align: center !important; }
-
-  /* Property Detail Sections */
-  .pd-section { padding: 20px !important; text-align: center !important; }
-  .pd-section h3 { text-align: center !important; font-size: 24px !important; }
-  .pd-text { text-align: center !important; }
-  .pd-text p { text-align: center !important; }
-  .pd-features { grid-template-columns: 1fr !important; }
-  .feat { justify-content: center !important; text-align: center !important; }
-
-  /* Data Tables */
-  .data-table th, .data-table td { font-size: 12px !important; padding: 10px 0 !important; }
-
-  /* Calculator */
-  .calc-grid { grid-template-columns: 1fr !important; padding: 20px !important; }
-  .calc-result .amt { font-size: 24px !important; }
-
-  /* Enquiry Card */
-  .enquiry-card { padding: 24px !important; text-align: center !important; }
-  .enquiry-card h4 { text-align: center !important; }
-  .enquiry-card p { text-align: center !important; }
-  .agent-card { text-align: center !important; }
-
-  /* FC Banner */
-  #fc-banner {
-    flex-direction: column !important;
-    gap: 12px !important;
-    text-align: center !important;
-    padding: 24px 20px !important;
-  }
-  .fc-banner-text { font-size: 9px !important; }
-
-  /* Footer — 2-column grid, brand spans full width */
+  /* Footer & Banners */
+  #fc-banner { flex-direction: column !important; gap: 12px !important; text-align: center !important; padding: 24px 20px !important; }
   footer { padding: 40px 24px 20px !important; }
-  .footer-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 30px 20px !important; text-align: center !important;
-  }
-  .footer-brand {
-    grid-column: 1 / -1 !important; display: flex !important;
-    flex-direction: column !important; align-items: center !important;
-    text-align: center !important;
-  }
-  .footer-brand p { text-align: center !important; }
-  .footer-col { text-align: center !important; }
-  .footer-bottom { flex-direction: column !important; gap: 8px !important; text-align: center !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; text-align: center !important; }
+  .footer-brand { display: flex !important; flex-direction: column !important; align-items: center !important; }
+  .footer-bottom { flex-direction: column !important; gap: 8px !important; }
 
-  /* Contact & social */
-  .contact-items { gap: 16px !important; }
-  .social-row { flex-direction: column !important; width: 100% !important; }
-  .social-btn { width: 100% !important; justify-content: center !important; }
-
-  /* Blog article pages */
-  .blog-hero { padding: 80px 20px 40px !important; text-align: center !important; }
-  .blog-title { font-size: 28px !important; text-align: center !important; }
-
-  /* Global mobile text centering */
-  h1, h2, h3, h4, h5, h6, p, a, li, span, .card, .section-title, .header p, .header h1 { text-align: center !important; }
-  .guide-cta-banner h3 { text-align: center !important; }
+  /* Video / Maps */
+  .about-video { height: 240px !important; }
 }
 
 </style>
