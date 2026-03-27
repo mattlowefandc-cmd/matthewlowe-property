@@ -70,9 +70,9 @@ article strong{color:var(--dark);}
   .similar-grid, .grid {display:flex!important; flex-wrap:nowrap!important; overflow-x:auto!important; scroll-snap-type:x mandatory!important; gap:16px!important; padding-bottom:20px!important; -webkit-overflow-scrolling:touch!important; grid-template-columns:none!important;}
   .similar-grid::-webkit-scrollbar, .grid::-webkit-scrollbar { display:none!important; }
   .sim-card, .card { flex: 0 0 85%!important; scroll-snap-align:center!important; }
-  .footer-grid{grid-template-columns:1fr !important; gap:40px !important; text-align:center !important;}
-  .footer-brand{display:flex !important; flex-direction:column !important; align-items:center !important;}
-  .footer-brand p{text-align:center !important;}
+  .footer-grid{grid-template-columns:1fr 1fr !important; gap:24px 20px !important; text-align:left !important;}
+  .footer-brand{grid-column:1 / -1 !important; display:flex !important; flex-direction:column !important; align-items:flex-start !important;}
+  .footer-brand p{text-align:left !important;}
   .contact-items{gap:16px !important;}
   .social-row{flex-direction:column !important; width:100% !important;}
   .social-btn{width:100% !important; justify-content:center !important;}
