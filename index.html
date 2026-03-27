@@ -1144,13 +1144,6 @@ new IntersectionObserver((entries) => {
   }
 }).observe(statsEl);
 
-// ── Mobile menu ──
-function toggleMenu() {
-  const links = document.querySelector('.nav-links');
-  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-  if (links.style.display === 'flex') {
-    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:100px;left:0;width:100%;background:var(--black);padding:20px 24px;gap:20px;';
-  }
 }
 
 async function handleGuideForm(e) {
@@ -1257,9 +1250,23 @@ discoveryKey.addEventListener('click', () => {
 function toggleMenu() {
   const navLinks = document.querySelector('.nav-links');
   const hamburger = document.getElementById('hamburger');
-  navLinks.classList.toggle('active');
-  hamburger.classList.toggle('active');
+  if(navLinks) navLinks.classList.toggle('active');
+  if(hamburger) hamburger.classList.toggle('active');
 }
+
+// Auto-close mobile menu when a link is clicked
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      const navLinks = document.querySelector('.nav-links');
+      const hamburger = document.getElementById('hamburger');
+      if (navLinks && navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('active');
+      }
+    });
+  });
+});
 </script>
 </body>
 </html>
