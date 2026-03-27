@@ -144,7 +144,7 @@
   --light-grey: #e8e4df;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{font-family:'Montserrat',sans-serif;color:var(--dark);background:var(--white);overflow-x:hidden;}
 h1,h2,h3,h4,.serif{font-family:'Cormorant Garamond',serif;}
 
@@ -524,9 +524,51 @@ footer{background:var(--black);padding:40px 60px 24px;}
   .market-desc { font-size: 13px !important; max-width: 100% !important; }
   .market-stats { justify-content: center !important; gap: 20px !important; }
 
-  /* Video / Maps */
+  /* ── FEATURED PROPERTIES ── */
+  #properties { padding: 40px 0 20px !important; overflow: hidden !important; }
+  .props-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    padding: 0 20px !important;
+    margin-bottom: 24px !important;
+  }
+  .props-header a { width: 100% !important; text-align: center !important; }
+  .search-filter-wrap { padding: 0 20px !important; margin-bottom: 20px !important; overflow: hidden !important; }
+  .search-filter { flex-wrap: nowrap !important; overflow-x: auto !important; justify-content: flex-start !important; }
+  .search-filter::-webkit-scrollbar { display: none !important; }
+  .props-grid {
+    display: flex !important; flex-direction: column !important;
+    gap: 12px !important; padding: 0 20px !important;
+  }
+  .prop-card { width: 100% !important; }
+  .prop-card:first-child .prop-img-wrap,
+  .prop-img-wrap { aspect-ratio: 16/9 !important; height: auto !important; }
+  .prop-info { padding: 16px 20px !important; }
+  .prop-name { font-size: 18px !important; }
+
+  /* Guide / Investor form */
+  #guide { grid-template-columns: 1fr !important; padding: 40px 20px !important; gap: 30px !important; }
+
+  /* Contact */
+  #contact { grid-template-columns: 1fr !important; padding: 40px 20px !important; gap: 30px !important; }
+  .social-row { flex-direction: column !important; gap: 10px !important; }
+  .social-btn { width: 100% !important; justify-content: center !important; }
+
+  /* Footer & Banners */
+  #fc-banner { flex-direction: column !important; gap: 12px !important; text-align: center !important; padding: 24px 20px !important; }
+  footer { padding: 40px 24px 20px !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; text-align: center !important; }
+  .footer-brand { display: flex !important; flex-direction: column !important; align-items: center !important; }
+  .footer-bottom { flex-direction: column !important; gap: 8px !important; }
+
+  /* Video */
   .about-video { height: 240px !important; }
+
+  /* Lock all elements within viewport */
+  * { max-width: 100% !important; }
 }
+
 
 
 </style>
